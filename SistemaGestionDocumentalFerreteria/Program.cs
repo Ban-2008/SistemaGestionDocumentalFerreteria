@@ -21,6 +21,7 @@ class program
     static int cantidadDocumentos = 0;
 
     static void Main()
+
     {
         int opcion;
 
@@ -53,7 +54,7 @@ class program
             switch (opcion)
             {
                 case 1:
-                    Console.WriteLine("Ha seleccionado: Registrar documento.");
+                    RegistrarDocumento();
                     break;
 
                 case 2:
@@ -91,5 +92,74 @@ class program
             }
 
         } while (opcion != 6);
+    }
+    static void RegistrarDocumento()
+    {
+        Console.WriteLine("===========================================");
+        Console.WriteLine("       REGISTRO DE NUEVO DOCUMENTO");
+        Console.WriteLine("===========================================");
+
+        // Comprobar si todavía existe espacio
+        if (cantidadDocumentos >= MAX_DOCUMENTOS)
+        {
+            Console.WriteLine("No hay espacio para registrar más documentos.");
+            return;
+        }
+
+        // Posición donde se guardará el documento
+        int posicion = cantidadDocumentos;
+
+        // Crear un código automático
+        codigos[posicion] = $"DOC-{cantidadDocumentos + 1:000}";
+
+        Console.Write("1. Nombre del proveedor: ");
+        nombresProveedores[posicion] = Console.ReadLine() ?? "";
+
+        Console.Write("2. RUC del proveedor: ");
+        rucs[posicion] = Console.ReadLine() ?? "";
+
+        Console.Write("3. Tipo de comprobante: ");
+        tiposComprobantes[posicion] = Console.ReadLine() ?? "";
+
+        Console.Write("4. Número del comprobante: ");
+        numerosComprobantes[posicion] = Console.ReadLine() ?? "";
+
+        Console.Write("5. Fecha del comprobante: ");
+        fechas[posicion] = Console.ReadLine() ?? "";
+
+        Console.Write("6. Producto adquirido: ");
+        productos[posicion] = Console.ReadLine() ?? "";
+
+        Console.Write("7. Cantidad: ");
+
+        while (!int.TryParse(Console.ReadLine(), out cantidades[posicion]) ||
+               cantidades[posicion] <= 0)
+        {
+            Console.Write("Ingrese una cantidad mayor que cero: ");
+        }
+
+        Console.Write("8. Precio por unidad: ");
+
+        while (!double.TryParse(Console.ReadLine(), out preciosUnitarios[posicion]) ||
+               preciosUnitarios[posicion] <= 0)
+        {
+            Console.Write("Ingrese un precio mayor que cero: ");
+        }
+
+        // Calcular el monto total
+        montosTotales[posicion] =
+            cantidades[posicion] * preciosUnitarios[posicion];
+
+        // Estado inicial del documento
+        estados[posicion] = "Recibido";
+
+        // Aumentar la cantidad de documentos registrados
+        cantidadDocumentos++;
+
+        Console.WriteLine();
+        Console.WriteLine("Documento registrado correctamente.");
+        Console.WriteLine($"Código asignado: {codigos[posicion]}");
+        Console.WriteLine($"Monto total: S/ {montosTotales[posicion]:0.00}");
+        Console.WriteLine($"Estado: {estados[posicion]}");
     }
 }

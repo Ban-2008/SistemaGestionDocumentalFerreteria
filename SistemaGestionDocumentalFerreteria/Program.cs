@@ -112,23 +112,22 @@ class program
         // Crear un código automático
         codigos[posicion] = $"DOC-{cantidadDocumentos + 1:000}";
 
-        Console.Write("1. Nombre del proveedor: ");
-        nombresProveedores[posicion] = Console.ReadLine() ?? "";
+         nombresProveedores[posicion] =
+         LeerTextoObligatorio("1. Nombre del proveedor: ");
 
-        Console.Write("2. RUC del proveedor: ");
-        rucs[posicion] = Console.ReadLine() ?? "";
+        rucs[posicion] = LeerRuc();
 
-        Console.Write("3. Tipo de comprobante: ");
-        tiposComprobantes[posicion] = Console.ReadLine() ?? "";
+         tiposComprobantes[posicion] =
+         LeerTextoObligatorio("3. Tipo de comprobante: ");
 
-        Console.Write("4. Número del comprobante: ");
-        numerosComprobantes[posicion] = Console.ReadLine() ?? "";
+         numerosComprobantes[posicion] =
+         LeerTextoObligatorio("4. Número del comprobante: ");
 
-        Console.Write("5. Fecha del comprobante: ");
-        fechas[posicion] = Console.ReadLine() ?? "";
+         fechas[posicion] =
+         LeerTextoObligatorio("5. Fecha del comprobante: ");
 
-        Console.Write("6. Producto adquirido: ");
-        productos[posicion] = Console.ReadLine() ?? "";
+         productos[posicion] =
+         LeerTextoObligatorio("6. Producto adquirido: ");
 
         Console.Write("7. Cantidad: ");
 
@@ -162,4 +161,46 @@ class program
         Console.WriteLine($"Monto total: S/ {montosTotales[posicion]:0.00}");
         Console.WriteLine($"Estado: {estados[posicion]}");
     }
+
+    static string LeerTextoObligatorio(string mensaje)
+    {
+        string dato;
+
+        do
+        {
+            Console.Write(mensaje);
+            dato = Console.ReadLine() ?? "";
+
+            if (string.IsNullOrWhiteSpace(dato))
+            {
+                Console.WriteLine("Este dato no puede quedar vacío.");
+            }
+
+        } while (string.IsNullOrWhiteSpace(dato));
+
+        return dato.Trim();
+    }
+
+    static string LeerRuc()
+    {
+        string ruc;
+        bool rucCorrecto;
+
+        do
+        {
+            Console.Write("2. RUC del proveedor: ");
+            ruc = Console.ReadLine() ?? "";
+
+            rucCorrecto = ruc.Length == 11 && long.TryParse(ruc, out _);
+
+            if (!rucCorrecto)
+            {
+                Console.WriteLine("El RUC debe contener exactamente 11 números.");
+            }
+
+        } while (!rucCorrecto);
+
+        return ruc;
+    }
+
 }
